@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 40 25% 97%;
+    --foreground: 25 40% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 25 40% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 25 40% 15%;
+
+    /* African heritage colors - Rich terracotta and deep purple */
+    --primary: 15 65% 50%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 270 45% 35%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 40 20% 90%;
+    --muted-foreground: 25 20% 45%;
+
+    --accent: 40 70% 55%;
+    --accent-foreground: 25 40% 15%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 15 65% 50%;
+
+    --radius: 0.75rem;
+
+    /* Custom gradients for African aesthetic */
+    --gradient-hero: linear-gradient(135deg, hsl(15 65% 50%) 0%, hsl(270 45% 35%) 100%);
+    --gradient-sunset: linear-gradient(180deg, hsl(25 80% 60%) 0%, hsl(15 70% 50%) 50%, hsl(270 45% 35%) 100%);
+    --gradient-overlay: linear-gradient(180deg, transparent 0%, hsl(25 40% 15% / 0.7) 100%);
+  }
+
+  .dark {
+    --background: 25 30% 12%;
+    --foreground: 40 20% 95%;
+
+    --card: 25 25% 15%;
+    --card-foreground: 40 20% 95%;
+
+    --popover: 25 25% 15%;
+    --popover-foreground: 40 20% 95%;
+
+    --primary: 15 70% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 270 40% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 25 20% 20%;
+    --muted-foreground: 40 15% 65%;
+
+    --accent: 40 65% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 40 20% 95%;
+
+    --border: 25 20% 25%;
+    --input: 25 20% 25%;
+    --ring: 15 70% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+@layer utilities {
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+  
+  .gradient-sunset {
+    background: var(--gradient-sunset);
+  }
+  
+  .gradient-overlay {
+    background: var(--gradient-overlay);
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Custom animations */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.5s ease-out forwards;
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.4s ease-out forwards;
+  }
+
+  /* Line clamp utilities */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
