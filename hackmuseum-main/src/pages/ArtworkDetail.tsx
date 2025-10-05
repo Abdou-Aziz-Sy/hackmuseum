@@ -1,8 +1,11 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, QrCode, Share2, MapPin, Calendar, User, Clock } from "lucide-react";
+import { ArrowLeft, QrCode, Share2, MapPin, Calendar, User, Clock, Eye, MessageCircle, Box } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import AudioPlayer from "@/components/AudioPlayer";
 import QRCodeGenerator from "@/components/QRCodeGenerator";
+import SimpleVRExperience from "@/components/SimpleVRExperience";
+import Discussion from "@/components/Discussion";
+import VisualDescription from "@/components/VisualDescription";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,6 +22,9 @@ const ArtworkDetail = () => {
   const artwork = artworks.find((a) => a.id === id);
   const similarArtworks = artworks.filter((a) => a.id !== id && a.category === artwork?.category).slice(0, 3);
   const baseUrl = window.location.origin;
+  
+  // Déterminer si l'œuvre est en 3D (simulation basée sur la catégorie)
+  const is3D = artwork?.category === 'sculpture' || artwork?.category === 'masks';
 
   if (!artwork) {
     return (
@@ -62,18 +68,27 @@ const ArtworkDetail = () => {
         </Button>
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Image */}
+          {/* Image et visualisations */}
           <div className="space-y-6 animate-fade-in sticky top-24">
-            <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl border-4 border-primary/10">
-              <img
-                src={artwork.image}
+            {/* Visualiseur 3D/2D */}
+            <div className="relative">
+              <img 
+                src={artwork.image} 
                 alt={artwork.title[language]}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                className="w-full h-96 object-cover rounded-lg shadow-lg"
               />
+              {is3D && (
+                <div className="absolute top-4 right-4">
+                  <Badge variant="secondary" className="bg-primary/20 text-primary">
+                    3D
+                  </Badge>
+                </div>
+              )}
             </div>
             
-            <div className="flex gap-4">
-              <Button variant="outline" className="flex-1" onClick={handleShare}>
+            {/* Boutons d'action */}
+            <div className="grid grid-cols-2 gap-3">
+              <Button variant="outline" onClick={handleShare}>
                 <Share2 className="mr-2 h-4 w-4" />
                 Partager
               </Button>
@@ -97,6 +112,44 @@ const ArtworkDetail = () => {
                   </div>
                 </DialogContent>
               </Dialog>
+            </div>
+
+            {/* Boutons d'expérience enrichie */}
+            <div className="grid grid-cols-1 gap-3">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="w-full">
+                    <Eye className="mr-2 h-4 w-4" />
+                    Description Visuelle
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Description Visuelle - {artwork.title[language]}</DialogTitle>
+                  </DialogHeader>
+                  <VisualDescription artwork={artwork} />
+                </DialogContent>
+              </Dialog>
+
+              {is3D && (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" className="w-full">
+                      <Box className="mr-2 h-4 w-4" />
+                      Expérience VR
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Expérience VR - {artwork.title[language]}</DialogTitle>
+                    </DialogHeader>
+                    <SimpleVRExperience
+                      artworkId={artwork.id}
+                      artworkTitle={artwork.title[language]}
+                    />
+                  </DialogContent>
+                </Dialog>
+              )}
             </div>
           </div>
 
@@ -238,6 +291,14 @@ const ArtworkDetail = () => {
               </TabsContent>
             </Tabs>
           </div>
+        </div>
+
+        {/* Section de discussion */}
+        <div className="mt-16 animate-fade-in">
+          <Discussion 
+            artworkId={artwork.id} 
+            artworkTitle={artwork.title[language]} 
+          />
         </div>
 
         {/* Similar Artworks */}

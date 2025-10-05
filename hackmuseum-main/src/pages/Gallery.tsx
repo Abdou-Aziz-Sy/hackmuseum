@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { artworks, categories } from "@/data/artworks";
 import OptimizedImage from "@/components/OptimizedImage";
+import AudioPlayer from "@/components/AudioPlayer";
 
 const Gallery = () => {
   const { language, t } = useLanguage();
@@ -238,9 +240,22 @@ const Gallery = () => {
                         <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                       </Link>
                     </Button>
-                    <Button variant="outline" size="icon" className="hover:bg-primary hover:text-primary-foreground flex-shrink-0">
-                      <Headphones className="h-4 w-4" />
-                    </Button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" size="icon" className="hover:bg-primary hover:text-primary-foreground flex-shrink-0">
+                          <Headphones className="h-4 w-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-md">
+                        <DialogHeader>
+                          <DialogTitle>Audio - {artwork.title[language]}</DialogTitle>
+                        </DialogHeader>
+                        <AudioPlayer
+                          audioUrl={artwork.audioGuideUrl}
+                          title={artwork.title[language]}
+                        />
+                      </DialogContent>
+                    </Dialog>
                   </CardFooter>
                 </div>
               </Card>

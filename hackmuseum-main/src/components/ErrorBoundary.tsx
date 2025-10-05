@@ -1,16 +1,20 @@
 import React, { Component, ErrorInfo, ReactNode } from "react";
-import { AlertTriangle, RefreshCw } from "lucide-react";
+import { AlertTriangle, RefreshCw, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
+  resetOnPropsChange?: boolean;
 }
 
 interface State {
   hasError: boolean;
   error?: Error;
+  errorInfo?: ErrorInfo;
 }
 
 class ErrorBoundary extends Component<Props, State> {
@@ -22,12 +26,32 @@ class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
+  public static getDerivedStateFromProps(props: Props, state: State): State | null {
+    // Reset error state when props change if resetOnPropsChange is true
+    if (props.resetOnPropsChange && state.hasError) {
+      return { hasError: false, error: undefined, errorInfo: undefined };
+    }
+    return null;
+  }
+
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // Log error to console
     console.error("ErrorBoundary caught an error:", error, errorInfo);
+    
+    // Update state with error info for display
+    this.setState({ errorInfo });
+    
+    // Call onError callback if provided
+    if (this.props.onError) {
+      this.props.onError(error, errorInfo);
+    }
+    
+    // Here you could send error to a logging service
+    // Example: sendErrorToLoggingService(error, errorInfo);
   }
 
   private handleRetry = () => {
-    this.setState({ hasError: false, error: undefined });
+    this.setState({ hasError: false, error: undefined, errorInfo: undefined });
   };
 
   public render() {
@@ -37,8 +61,8 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen bg-background flex items-center justify-center p-4">
-          <Card className="w-full max-w-md">
+        <div className="min-h-[50vh] bg-background flex items-center justify-center p-4">
+          <Card className="w-full max-w-md shadow-lg border-destructive/20">
             <CardHeader className="text-center">
               <div className="mx-auto w-12 h-12 bg-destructive/10 rounded-full flex items-center justify-center mb-4">
                 <AlertTriangle className="h-6 w-6 text-destructive" />
@@ -57,18 +81,29 @@ class ErrorBoundary extends Component<Props, State> {
                   <pre className="mt-2 text-xs bg-muted p-2 rounded overflow-auto">
                     {this.state.error.message}
                   </pre>
+                  {this.state.errorInfo && (
+                    <pre className="mt-2 text-xs bg-muted p-2 rounded overflow-auto max-h-40">
+                      {this.state.errorInfo.componentStack}
+                    </pre>
+                  )}
                 </details>
               )}
-              <div className="flex gap-2 justify-center">
-                <Button onClick={this.handleRetry} variant="outline">
-                  <RefreshCw className="mr-2 h-4 w-4" />
-                  Réessayer
-                </Button>
-                <Button onClick={() => window.location.reload()}>
-                  Recharger la page
-                </Button>
-              </div>
             </CardContent>
+            <CardFooter className="flex gap-2 justify-center">
+              <Button onClick={this.handleRetry} variant="outline">
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Réessayer
+              </Button>
+              <Button onClick={() => window.location.reload()}>
+                Recharger la page
+              </Button>
+              <Button variant="ghost" asChild>
+                <Link to="/">
+                  <Home className="mr-2 h-4 w-4" />
+                  Accueil
+                </Link>
+              </Button>
+            </CardFooter>
           </Card>
         </div>
       );

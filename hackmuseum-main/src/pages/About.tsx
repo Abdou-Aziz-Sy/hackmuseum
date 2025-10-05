@@ -5,7 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Building2, Users, Globe, Award, MapPin, Clock, Phone, Mail, ExternalLink, Star } from "lucide-react";
 
 const About = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const stats = [
     { icon: Building2, value: "2018", label: { fr: "Année d'ouverture", en: "Opening Year", wo: "Awu Ubbi" } },
