@@ -176,12 +176,12 @@ const Gallery = () => {
                   
                   {/* Badges floating on hover */}
                   <div className="absolute top-3 right-3 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0">
-                    <Badge variant="secondary" className="backdrop-blur-sm bg-background/90 text-xs px-2 py-1">
-                      <MapPin className="h-3 w-3 mr-1" />
+                    <Badge variant="secondary" className="backdrop-blur-sm bg-background/90 text-black text-xs px-2 py-1">
+                      <MapPin className="h-3 w-3 mr-1 text-black" />
                       {artwork.origin}
                     </Badge>
-                    <Badge variant="secondary" className="backdrop-blur-sm bg-background/90 text-xs px-2 py-1">
-                      <Calendar className="h-3 w-3 mr-1" />
+                    <Badge variant="secondary" className="backdrop-blur-sm bg-background/90 text-black text-xs px-2 py-1">
+                      <Calendar className="h-3 w-3 mr-1 text-black" />
                       {artwork.period}
                     </Badge>
                   </div>
