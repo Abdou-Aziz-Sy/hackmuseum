@@ -9,9 +9,9 @@ const About = () => {
 
   const stats = [
     { icon: Building2, value: "2018", label: { fr: "Année d'ouverture", en: "Opening Year", wo: "Awu Ubbi" } },
-    { icon: Users, value: "100K+", label: { fr: "Visiteurs annuels", en: "Annual Visitors", wo: "Ay Jëfandikoo ci Aw" } },
-    { icon: Globe, value: "54", label: { fr: "Pays représentés", en: "Countries Represented", wo: "Réew yu Wone" } },
-    { icon: Award, value: "5000+", label: { fr: "Œuvres exposées", en: "Exhibited Works", wo: "Liggéey yu Wone" } },
+    { icon: Users, value: "50-100K", label: { fr: "Visiteurs par an", en: "Annual Visitors", wo: "Ay Jëfandikoo ci Aw" } },
+    { icon: Globe, value: "18 000", label: { fr: "Pièces en collection", en: "Collection Pieces", wo: "Ay pièces ci kolleksion" } },
+    { icon: Award, value: "1966", label: { fr: "Conception initiale", en: "Initial Conception", wo: "Njëkk xalaat" } },
   ];
 
   const contactInfo = {
@@ -21,11 +21,11 @@ const About = () => {
       wo: "Yoonu Aéroport Léopold Sédar Senghor, Dakar, Senegaal"
     },
     hours: {
-      fr: "Mardi - Dimanche: 9h00 - 18h00\nFermé le lundi",
-      en: "Tuesday - Sunday: 9:00 AM - 6:00 PM\nClosed on Monday",
-      wo: "Talaata - Dibéer: 9h00 - 18h00\nUbbul ci Altene"
+      fr: "Mardi - Samedi: 10h00 - 19h00\nDimanche et Lundi: Fermé",
+      en: "Tuesday - Saturday: 10:00 AM - 7:00 PM\nClosed Sunday and Monday",
+      wo: "Talaata - Gaawu: 10h00 - 19h00\nDibéer ak Altene: Ubbul"
     },
-    phone: "+221 33 869 47 47",
+    phone: "+221 33 889 11 80",
     email: "info@museecivilisationsnoires.sn"
   };
 
@@ -44,15 +44,14 @@ const About = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 animate-fade-in">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              {t("about")}
+              À propos du Musée des Civilisations noires
             </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              {language === "fr" && "Le Musée des Civilisations Noires est l'un des plus grands espaces culturels d'Afrique, dédié à la préservation et à la célébration du patrimoine des civilisations noires."}
-              {language === "en" && "The Museum of Black Civilizations is one of Africa's largest cultural spaces, dedicated to preserving and celebrating the heritage of black civilizations."}
-              {language === "wo" && "Musée bu Sivilizasioon yu Ñuul mooy benn ci barab yu mag yu aada yu Afrik, ñu ko def ngir wone ak wone naat bu aada bu sivilizasioon yu ñuul."}
+            <p className="text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto">
+              {language === "fr" && "Projet au long cours, pensé tour à tour par Lamine Senghor, Léopold Sedar Senghor et Abdoulaye Wade, le Musée des Civilisations noires a été inauguré le 6 décembre 2018 par le Président Macky Sall. Le MCN œuvre pour la valorisation de l'apport des Civilisations noires au patrimoine universel de l'humanité."}
+              {language === "en" && "A long-term project, conceived by Lamine Senghor, Léopold Sedar Senghor and Abdoulaye Wade, the Museum of Black Civilizations was inaugurated on December 6, 2018 by President Macky Sall. The MCN works to promote the contribution of Black Civilizations to the universal heritage of humanity."}
+              {language === "wo" && "Projet bu ndaw bu Lamine Senghor, Léopold Sedar Senghor ak Abdoulaye Wade xalaatal, Musée des Civilisations noires bi, Président Macky Sall moo ko ubbi ci 6 décembre 2018. MCN bi dafa liggéey ngir wone li Civilisations noires yi jëfandikoo ci patrimoine bu aduna bi."}
             </p>
           </div>
-
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
             {stats.map((stat, index) => (
               <Card
@@ -80,9 +79,9 @@ const About = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-lg leading-relaxed text-muted-foreground">
-                    {language === "fr" && "Nous nous engageons à offrir une expérience culturelle enrichissante qui célèbre la diversité et la richesse des civilisations noires à travers le monde. Notre musée sert de pont entre le passé, le présent et l'avenir, tout en rendant accessible ce patrimoine inestimable grâce au digital."}
-                    {language === "en" && "We are committed to offering an enriching cultural experience that celebrates the diversity and richness of black civilizations around the world. Our museum serves as a bridge between the past, present and future, while making this invaluable heritage accessible through digital means."}
-                    {language === "wo" && "Dafu nuy binde ngir jox ay xëy bu aada bu njëkk bu wone melo ak naat bu sivilizasioon yu ñuul ci aduna bi. Musée bi nuy jëfandikoo ngir jëfëndikoo jamano ju ñëw ak jamano ju nekk ak jamano ju ñëw, waaye ñu man koy gis ngir digital."}
+                    {language === "fr" && "Le visiteur qui franchit la porte de la case à impluvium qui a inspiré son architecture rencontre l'Afrique, berceau de l'humanité. À travers les fascinantes œuvres exposées, il découvre la dispersion des peuples noirs à travers le monde, leurs formations sociales, modes de production, représentations symboliques et rites initiatiques depuis la nuit des temps."}
+                    {language === "en" && "The visitor who crosses the threshold of the impluvium house that inspired its architecture encounters Africa, cradle of humanity. Through the fascinating works on display, they discover the dispersion of black peoples throughout the world, their social formations, modes of production, symbolic representations and initiation rites since the dawn of time."}
+                    {language === "wo" && "Ki dugg ci këru impluvium bi mel ci architecture bi, moo gis Afrik, berceau bu humanité. Ci liggéey yi fascinant yu ñu wone, moo gis dispersion bu askan yu ñuul ci aduna bi, seen formation social, anam yu production, representation symbolique ak rite initiation yu njëkk."}
                   </p>
                 </CardContent>
               </Card>
@@ -149,57 +148,98 @@ const About = () => {
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>
-                    {language === "fr" ? "Suivez-nous" : language === "en" ? "Follow Us" : "Toppal nu"}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-3">
-                    {socialLinks.map((social) => (
-                      <Button
-                        key={social.name}
-                        variant="outline"
-                        size="sm"
-                        className="justify-start gap-2"
-                        onClick={() => window.open(social.url, '_blank')}
-                      >
-                        <span className="text-lg">{social.icon}</span>
-                        {social.name}
-                        <ExternalLink className="h-3 w-3 ml-auto" />
-                      </Button>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </div>
 
-          <Card className="animate-fade-in">
+          <Card className="animate-fade-in mb-8">
             <CardHeader>
               <CardTitle className="text-center">
                 {language === "fr" ? "Partenaires & Soutiens" : language === "en" ? "Partners & Supporters" : "Jëfandikoo & Ndimbal"}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-primary">UNESCO</div>
-                  <p className="text-sm text-muted-foreground">Patrimoine Mondial</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
+                <div className="flex flex-col items-center space-y-3">
+                  <img 
+                    src="/logo-unesco.png" 
+                    alt="UNESCO" 
+                    className="h-20 w-auto object-contain"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      target.nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                  <div className="hidden text-2xl font-bold text-primary">UNESCO</div>
+                  <p className="text-sm text-muted-foreground text-center">Patrimoine Mondial</p>
                 </div>
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-primary">UE</div>
-                  <p className="text-sm text-muted-foreground">Coopération Culturelle</p>
+                <div className="flex flex-col items-center space-y-3">
+                  <img 
+                    src="/logo-ue.jpg" 
+                    alt="Union Européenne" 
+                    className="h-20 w-auto object-contain"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      target.nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                  <div className="hidden text-2xl font-bold text-primary">UE</div>
+                  <p className="text-sm text-muted-foreground text-center">Coopération Culturelle</p>
                 </div>
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-primary">Slush'D</div>
-                  <p className="text-sm text-muted-foreground">Innovation Tech</p>
+                <div className="flex flex-col items-center space-y-3">
+                  <img 
+                    src="/logo-slushd.jpg" 
+                    alt="Slush'D" 
+                    className="h-20 w-auto object-contain"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      target.nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                  <div className="hidden text-2xl font-bold text-primary">Slush'D</div>
+                  <p className="text-sm text-muted-foreground text-center">Innovation Tech</p>
                 </div>
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-primary">Gouvernement</div>
-                  <p className="text-sm text-muted-foreground">République du Sénégal</p>
+                <div className="flex flex-col items-center space-y-3">
+                  <img 
+                    src="/logo-gouvernement.jpg" 
+                    alt="Gouvernement du Sénégal" 
+                    className="h-20 w-auto object-contain"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      target.nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                  <div className="hidden text-2xl font-bold text-primary">Gouvernement</div>
+                  <p className="text-sm text-muted-foreground text-center">République du Sénégal</p>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Section Suivez-nous */}
+          <Card className="animate-fade-in">
+            <CardHeader>
+              <CardTitle className="text-center">
+                {language === "fr" ? "Suivez-nous" : language === "en" ? "Follow Us" : "Toppal nu"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-center gap-4 flex-wrap">
+                {socialLinks.map((social) => (
+                  <Button
+                    key={social.name}
+                    variant="outline"
+                    size="lg"
+                    className="gap-2"
+                    onClick={() => window.open(social.url, '_blank')}
+                  >
+                    <span className="text-xl">{social.icon}</span>
+                    {social.name}
+                  </Button>
+                ))}
               </div>
             </CardContent>
           </Card>

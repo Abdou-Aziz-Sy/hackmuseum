@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   Users, 
   Eye, 
@@ -64,6 +65,7 @@ interface SystemAlert {
 
 const ProfessionalDashboard = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [stats, setStats] = useState<DashboardStats>({
     totalUsers: 1247,
     activeUsers: 892,
@@ -214,7 +216,11 @@ const ProfessionalDashboard = () => {
                   <span>
                     {systemAlerts.filter(alert => !alert.resolved).length} alerte(s) système active(s)
                   </span>
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => navigate('/admin/notifications')}
+                  >
                     Voir toutes les alertes
                   </Button>
                 </div>

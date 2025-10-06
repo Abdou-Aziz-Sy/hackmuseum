@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, QrCode, Share2, MapPin, Calendar, User, Clock, Eye, MessageCircle, Box } from "lucide-react";
 import Navigation from "@/components/Navigation";
-import AudioPlayer from "@/components/AudioPlayer";
+import TextToSpeechPlayer from "@/components/TextToSpeechPlayer";
 import QRCodeGenerator from "@/components/QRCodeGenerator";
 import SimpleVRExperience from "@/components/SimpleVRExperience";
 import Discussion from "@/components/Discussion";
@@ -234,12 +234,13 @@ const ArtworkDetail = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>{t("listenAudio")}</CardTitle>
+                <CardTitle>{t("listenAudio") || "Écouter la description"}</CardTitle>
               </CardHeader>
               <CardContent>
-                <AudioPlayer
-                  audioUrl={artwork.audioUrl}
+                <TextToSpeechPlayer
+                  text={artwork.description[language]}
                   title={artwork.title[language]}
+                  language={language === "fr" ? "fr-FR" : language === "en" ? "en-US" : "fr-FR"}
                 />
               </CardContent>
             </Card>
@@ -253,10 +254,18 @@ const ArtworkDetail = () => {
               
               <TabsContent value="description" className="mt-6">
                 <Card className="border-2">
-                  <CardContent className="pt-6">
+                  <CardContent className="pt-6 space-y-4">
                     <p className="text-lg leading-relaxed">
                       {artwork.description[language]}
                     </p>
+                    <div className="border-t pt-4">
+                      <h4 className="text-sm font-medium mb-2 text-muted-foreground">Écouter cette section :</h4>
+                      <TextToSpeechPlayer
+                        text={artwork.description[language]}
+                        title={`Description - ${artwork.title[language]}`}
+                        language={language === "fr" ? "fr-FR" : language === "en" ? "en-US" : "fr-FR"}
+                      />
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -269,12 +278,20 @@ const ArtworkDetail = () => {
                       Timeline de l'œuvre
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="space-y-4">
                     <div className="relative pl-8 border-l-2 border-primary/20">
                       <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-primary" />
                       <p className="text-lg leading-relaxed pb-6">
                         {artwork.history[language]}
                       </p>
+                    </div>
+                    <div className="border-t pt-4">
+                      <h4 className="text-sm font-medium mb-2 text-muted-foreground">Écouter l'histoire :</h4>
+                      <TextToSpeechPlayer
+                        text={artwork.history[language]}
+                        title={`Histoire - ${artwork.title[language]}`}
+                        language={language === "fr" ? "fr-FR" : language === "en" ? "en-US" : "fr-FR"}
+                      />
                     </div>
                   </CardContent>
                 </Card>
@@ -282,10 +299,18 @@ const ArtworkDetail = () => {
               
               <TabsContent value="context" className="mt-6">
                 <Card className="border-2 bg-gradient-to-br from-primary/5 to-transparent">
-                  <CardContent className="pt-6">
+                  <CardContent className="pt-6 space-y-4">
                     <p className="text-lg leading-relaxed">
                       {artwork.culturalContext[language]}
                     </p>
+                    <div className="border-t pt-4">
+                      <h4 className="text-sm font-medium mb-2 text-muted-foreground">Écouter le contexte culturel :</h4>
+                      <TextToSpeechPlayer
+                        text={artwork.culturalContext[language]}
+                        title={`Contexte culturel - ${artwork.title[language]}`}
+                        language={language === "fr" ? "fr-FR" : language === "en" ? "en-US" : "fr-FR"}
+                      />
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>

@@ -1,7 +1,8 @@
 import Navigation from "@/components/Navigation";
 import ReservationForm from "@/components/ReservationForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, Clock, Users, MapPin, Phone, Mail } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Calendar, Clock, Users, MapPin, Phone, Mail, Euro, Info, AlertCircle } from "lucide-react";
 
 const Reservation = () => {
   return (
@@ -36,15 +37,15 @@ const Reservation = () => {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="font-medium">Lundi - Vendredi</span>
-                    <span>9h00 - 17h00</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Samedi</span>
-                    <span>9h00 - 13h00</span>
+                    <span className="font-medium">Mardi - Samedi</span>
+                    <span>10h00 - 19h00</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="font-medium">Dimanche</span>
+                    <span>Fermé</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium">Lundi</span>
                     <span>Fermé</span>
                   </div>
                 </CardContent>
@@ -53,20 +54,22 @@ const Reservation = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Clock className="h-5 w-5" />
-                    Créneaux de visite
+                    <Euro className="h-5 w-5" />
+                    Tarifs Visite Libre
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  <div className="text-sm">
-                    <div className="font-medium">Matin</div>
-                    <div>9h00 - 10h30</div>
-                    <div>10h30 - 12h00</div>
+                  <div className="flex justify-between text-sm">
+                    <span>Tarif plein</span>
+                    <span className="font-semibold">3000 FCFA</span>
                   </div>
-                  <div className="text-sm">
-                    <div className="font-medium">Après-midi</div>
-                    <div>14h00 - 15h30</div>
-                    <div>15h30 - 17h00</div>
+                  <div className="flex justify-between text-sm">
+                    <span>Scolaire/Étudiant</span>
+                    <span className="font-semibold">500 FCFA</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>Groupe (10-30 pers.)</span>
+                    <span className="font-semibold">2500 FCFA/pers.</span>
                   </div>
                 </CardContent>
               </Card>
@@ -75,25 +78,25 @@ const Reservation = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Users className="h-5 w-5" />
-                    Informations pratiques
+                    Tarifs Visite Guidée
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="text-sm">
-                    <div className="font-medium mb-1">Durée de visite</div>
-                    <div>1h30 par créneau</div>
+                <CardContent className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Tarif plein</span>
+                    <span className="font-semibold">5000 FCFA</span>
                   </div>
-                  <div className="text-sm">
-                    <div className="font-medium mb-1">Groupe maximum</div>
-                    <div>20 personnes</div>
+                  <div className="flex justify-between text-sm">
+                    <span>Tarif scolaire</span>
+                    <span className="font-semibold">1000 FCFA</span>
                   </div>
-                  <div className="text-sm">
-                    <div className="font-medium mb-1">Tarif</div>
-                    <div className="text-green-600 font-semibold">Gratuit</div>
+                  <div className="flex justify-between text-sm">
+                    <span>Tarif étudiant</span>
+                    <span className="font-semibold">1500 FCFA</span>
                   </div>
-                  <div className="text-sm">
-                    <div className="font-medium mb-1">Annulation</div>
-                    <div>Jusqu'à 24h avant</div>
+                  <div className="flex justify-between text-sm">
+                    <span>Groupe (10-30 pers.)</span>
+                    <span className="font-semibold">4000 FCFA/pers.</span>
                   </div>
                 </CardContent>
               </Card>
@@ -108,20 +111,69 @@ const Reservation = () => {
                 <CardContent className="space-y-3">
                   <div className="flex items-center gap-2 text-sm">
                     <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <span>Place de la Renaissance, Dakar</span>
+                    <span>Autoroute prolongée, Place de la Gare</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Phone className="h-4 w-4 text-muted-foreground" />
-                    <span>+221 33 825 98 00</span>
+                    <span>+221 33 889 11 80</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Mail className="h-4 w-4 text-muted-foreground" />
-                    <span>info@mcn.sn</span>
+                    <span>info@museecivilisationsnoires.sn</span>
                   </div>
                 </CardContent>
               </Card>
             </div>
           </div>
+
+          {/* Consignes et règles de visite */}
+          <Card className="mt-12">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Info className="h-5 w-5" />
+                Consignes de visite
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  <strong>Visites de groupes :</strong> Les élèves doivent circuler au Musée en sous-groupes, accompagnés d'une personne responsable.
+                </AlertDescription>
+              </Alert>
+              <div className="space-y-3">
+                <h4 className="font-semibold">Règles à respecter :</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary">•</span>
+                    Il est interdit de boire ou de manger dans les salles d'exposition
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary">•</span>
+                    Les contenants de liquide doivent être rangés dans votre sac
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary">•</span>
+                    Les photos avec flash ne sont pas permises
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary">•</span>
+                    Il est interdit de toucher aux objets dans les salles d'exposition
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary">•</span>
+                    Circulez calmement. Il est interdit de courir dans le Musée
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-2">Accessibilité universelle</h4>
+                <p className="text-sm text-muted-foreground">
+                  Le MCN est accessible à toutes les personnes.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* FAQ */}
           <Card className="mt-12">
@@ -133,27 +185,28 @@ const Reservation = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <h4 className="font-semibold mb-2">Dois-je payer pour visiter le musée ?</h4>
+                <h4 className="font-semibold mb-2">Quels sont les tarifs d'entrée ?</h4>
                 <p className="text-sm text-muted-foreground">
-                  Non, l'entrée au musée est gratuite. Les réservations sont également gratuites.
+                  Visite libre : 3000 FCFA (tarif plein), 500 FCFA (scolaire/étudiant). 
+                  Visite guidée : 5000 FCFA (tarif plein), 1000-1500 FCFA (scolaire/étudiant).
                 </p>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">Puis-je annuler ma réservation ?</h4>
+                <h4 className="font-semibold mb-2">Comment réserver pour un groupe ?</h4>
                 <p className="text-sm text-muted-foreground">
-                  Oui, vous pouvez annuler votre réservation jusqu'à 24h avant la date prévue.
+                  Les groupes de 10 à 30 personnes bénéficient de tarifs préférentiels. Contactez-nous directement pour organiser votre visite.
                 </p>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">Que se passe-t-il si j'arrive en retard ?</h4>
+                <h4 className="font-semibold mb-2">Les visites guidées sont-elles disponibles tous les jours ?</h4>
                 <p className="text-sm text-muted-foreground">
-                  Nous vous recommandons d'arriver 15 minutes avant votre créneau. En cas de retard important, nous essaierons de vous accommoder selon les disponibilités.
+                  Les visites guidées sont disponibles du mardi au samedi. Réservation recommandée pour garantir la disponibilité d'un guide.
                 </p>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">Puis-je visiter sans réservation ?</h4>
+                <h4 className="font-semibold mb-2">Le musée est-il accessible aux personnes à mobilité réduite ?</h4>
                 <p className="text-sm text-muted-foreground">
-                  Oui, mais nous recommandons fortement de réserver pour garantir votre place et éviter l'attente.
+                  Oui, le MCN est entièrement accessible à toutes les personnes, avec des aménagements spécifiques pour faciliter la visite.
                 </p>
               </div>
             </CardContent>

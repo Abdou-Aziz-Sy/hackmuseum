@@ -25,6 +25,7 @@ import CategoryManagement from "./pages/admin/CategoryManagement";
 import ReservationManagement from "./pages/admin/ReservationManagement";
 import UserManagement from "./pages/admin/UserManagement";
 import Settings from "./pages/admin/Settings";
+import Notifications from "./pages/admin/Notifications";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 
@@ -63,6 +64,7 @@ const App = () => (
                 <Route path="/admin/reservations" element={<ErrorBoundary><ProtectedRoute requireAdmin><ReservationManagement /></ProtectedRoute></ErrorBoundary>} />
                 <Route path="/admin/users" element={<ErrorBoundary><ProtectedRoute requireAdmin><UserManagement /></ProtectedRoute></ErrorBoundary>} />
                 <Route path="/admin/settings" element={<ErrorBoundary><ProtectedRoute requireAdmin><Settings /></ProtectedRoute></ErrorBoundary>} />
+                <Route path="/admin/notifications" element={<ErrorBoundary><ProtectedRoute requireAdmin><Notifications /></ProtectedRoute></ErrorBoundary>} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<ErrorBoundary><NotFound /></ErrorBoundary>} />

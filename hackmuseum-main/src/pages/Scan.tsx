@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import QRScanner from "@/components/QRScanner";
@@ -7,24 +7,60 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { QrCode, Search, Camera, Grid3x3 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { artworks } from "@/data/artworks";
 import { toast } from "sonner";
 
 const Scan = () => {
-  const [artworkId, setArtworkId] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [showScanner, setShowScanner] = useState(false);
+  const [searchResults, setSearchResults] = useState<typeof artworks>([]);
+  const [showResults, setShowResults] = useState(false);
   const navigate = useNavigate();
   const { language } = useLanguage();
 
   const handleSearch = () => {
-    if (artworkId) {
-      navigate(`/artwork/${artworkId}`);
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      
+      // Recherche par ID direct
+      if (/^\d+$/.test(searchQuery)) {
+        const artwork = artworks.find(a => a.id === searchQuery);
+        if (artwork) {
+          navigate(`/artwork/${searchQuery}`);
+          return;
+        }
+      }
+      
+      // Recherche par nom ou pays
+      const results = artworks.filter(artwork => 
+        artwork.title.fr.toLowerCase().includes(query) ||
+        artwork.title.en.toLowerCase().includes(query) ||
+        artwork.title.wo.toLowerCase().includes(query) ||
+        artwork.origin.toLowerCase().includes(query) ||
+        artwork.artist.toLowerCase().includes(query)
+      );
+      
+      if (results.length === 1) {
+        navigate(`/artwork/${results[0].id}`);
+      } else if (results.length > 1) {
+        setSearchResults(results);
+        setShowResults(true);
+      } else {
+        toast.error(
+          language === "fr"
+            ? "Aucune œuvre trouvée"
+            : language === "en"
+            ? "No artwork found"
+            : "Kenn gisul liggéey"
+        );
+      }
     } else {
       toast.error(
         language === "fr"
-          ? "Veuillez entrer un ID d'œuvre"
+          ? "Veuillez entrer un terme de recherche"
           : language === "en"
-          ? "Please enter an artwork ID"
-          : "Duggal benn ID bu liggéey"
+          ? "Please enter a search term"
+          : "Duggal benn baat"
       );
     }
   };
@@ -124,13 +160,13 @@ const Scan = () => {
                     type="text"
                     placeholder={
                       language === "fr"
-                        ? "Entrez l'ID (ex: 1, 2, 3)"
+                        ? "Nom de l'œuvre, pays ou ID..."
                         : language === "en"
-                        ? "Enter ID (e.g., 1, 2, 3)"
-                        : "Duggal ID (misaal: 1, 2, 3)"
+                        ? "Artwork name, country or ID..."
+                        : "Turu liggéey, réew walla ID..."
                     }
-                    value={artworkId}
-                    onChange={(e) => setArtworkId(e.target.value)}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                   />
                   <Button onClick={handleSearch}>
@@ -139,11 +175,37 @@ const Scan = () => {
                 </div>
                 <p className="text-sm text-muted-foreground text-center">
                   {language === "fr"
-                    ? "IDs disponibles: 1, 2, 3"
+                    ? "Exemples: Masque, Sénégal, Mali, 1, 2..."
                     : language === "en"
-                    ? "Available IDs: 1, 2, 3"
-                    : "ID yi am: 1, 2, 3"}
+                    ? "Examples: Mask, Senegal, Mali, 1, 2..."
+                    : "Misaal: Mask, Sénégal, Mali, 1, 2..."}
                 </p>
+                
+                {/* Résultats de recherche */}
+                {showResults && searchResults.length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    <h4 className="font-semibold text-sm">
+                      {language === "fr" ? "Résultats trouvés:" : "Search results:"}
+                    </h4>
+                    <div className="space-y-2 max-h-60 overflow-y-auto">
+                      {searchResults.map((artwork) => (
+                        <Button
+                          key={artwork.id}
+                          variant="outline"
+                          className="w-full justify-start text-left"
+                          onClick={() => navigate(`/artwork/${artwork.id}`)}
+                        >
+                          <div>
+                            <div className="font-semibold">{artwork.title[language]}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {artwork.artist} • {artwork.origin}
+                            </div>
+                          </div>
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>

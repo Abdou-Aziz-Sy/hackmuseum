@@ -29,13 +29,32 @@ const Navigation = () => {
     <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-3 font-serif text-xl font-bold text-primary hover:opacity-80 transition-opacity">
-            <OptimizedImage 
-              src={hommeImage} 
+          {/* Mobile Navigation Toggle - Left side on mobile */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </Button>
+          </div>
+
+          <Link to="/" className="flex items-center gap-3 font-serif text-xl font-bold text-primary hover:opacity-80 transition-opacity md:ml-0">
+            <img 
+              src="/logo-mcn.png" 
               alt="MCN Logo" 
-              className="w-10 h-10 rounded-full border-2 border-primary/20"
+              className="h-12 w-auto object-contain"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }}
             />
-            <span>MCN</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -127,20 +146,27 @@ const Navigation = () => {
             </div>
           </div>
 
-          {/* Mobile Navigation Toggle */}
+          {/* Mobile Language Selector - Right side on mobile */}
           <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle menu"
-            >
-              {isOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="gap-1 px-2">
+                  <Languages className="h-5 w-5" />
+                  <span className="text-xs">{languages.find((l) => l.code === language)?.label.slice(0, 2)}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {languages.map((lang) => (
+                  <DropdownMenuItem
+                    key={lang.code}
+                    onClick={() => setLanguage(lang.code)}
+                    className={language === lang.code ? "bg-muted" : ""}
+                  >
+                    {lang.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>

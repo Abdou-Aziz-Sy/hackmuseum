@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { artworks, categories } from "@/data/artworks";
 import OptimizedImage from "@/components/OptimizedImage";
-import AudioPlayer from "@/components/AudioPlayer";
+import TextToSpeechPlayer from "@/components/TextToSpeechPlayer";
 
 const Gallery = () => {
   const { language, t } = useLanguage();
@@ -250,9 +250,10 @@ const Gallery = () => {
                         <DialogHeader>
                           <DialogTitle>Audio - {artwork.title[language]}</DialogTitle>
                         </DialogHeader>
-                        <AudioPlayer
-                          audioUrl={artwork.audioGuideUrl}
+                        <TextToSpeechPlayer
+                          text={artwork.description[language]}
                           title={artwork.title[language]}
+                          language={language === "fr" ? "fr-FR" : language === "en" ? "en-US" : "fr-FR"}
                         />
                       </DialogContent>
                     </Dialog>
