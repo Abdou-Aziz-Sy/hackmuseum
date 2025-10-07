@@ -7,6 +7,8 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    // Configuration pour éviter les erreurs 404 avec React Router
+    historyApiFallback: true,
   },
   plugins: [react()],
   resolve: {

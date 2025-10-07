@@ -3,6 +3,20 @@ import artwork2 from "@/assets/artwork-2.jpg";
 import artwork3 from "@/assets/artwork-3.jpg";
 import femmeImage from "@/assets/femme.jpg";
 import feticheImage from "@/assets/fetiche.jpg";
+import hommeImage from "@/assets/homme.jpg";
+import image1 from "@/assets/1.jpg";
+import image2 from "@/assets/2.jpg";
+import image3 from "@/assets/3.jpg";
+import image4 from "@/assets/4.jpg";
+import image5 from "@/assets/5.jpg";
+import image6 from "@/assets/6.jpg";
+import image7 from "@/assets/7.jpg";
+import image8 from "@/assets/8.jpg";
+import image9 from "@/assets/9.jpg";
+import image10 from "@/assets/10.jpg";
+import image11 from "@/assets/11.jpg";
+import image12 from "@/assets/12.jpg";
+import image13 from "@/assets/13.jpg";
 
 export interface Artwork {
   id: string;
@@ -294,7 +308,7 @@ export const artworks: Artwork[] = [
     artist: "Facteur d'instruments",
     period: "XXe siècle",
     origin: "Guinée",
-    image: artwork3, // Utiliser une image existante temporairement
+    image: image1,
     category: "musical",
     description: {
       fr: "Ce djembé sculpté dans un tronc d'arbre unique témoigne de l'art de la facture d'instruments traditionnels. Sa résonance exceptionnelle en fait un instrument de choix pour les griots.",
@@ -322,7 +336,7 @@ export const artworks: Artwork[] = [
     artist: "Sculpteur Bambara",
     period: "XVIIIe siècle",
     origin: "Mali",
-    image: artwork1,
+    image: image2,
     category: "sculpture",
     description: {
       fr: "Cette imposante statue de chef représente l'autorité et le pouvoir dans la société bambara. Les détails du visage et de la coiffe témoignent du statut social élevé.",
@@ -350,7 +364,7 @@ export const artworks: Artwork[] = [
     artist: "Artisan Yoruba",
     period: "XXe siècle",
     origin: "Nigeria",
-    image: artwork2,
+    image: image3,
     category: "masks",
     description: {
       fr: "Ce masque de danse yoruba aux couleurs vives est utilisé lors des festivités traditionnelles. Il représente un esprit protecteur de la communauté.",
@@ -378,7 +392,7 @@ export const artworks: Artwork[] = [
     artist: "Couturier Peul",
     period: "XXe siècle",
     origin: "Sénégal",
-    image: artwork3,
+    image: image4,
     category: "textiles",
     description: {
       fr: "Ce boubou traditionnel en coton brodé témoigne de l'excellence de l'art vestimentaire peul. Les motifs géométriques racontent l'histoire familiale.",
@@ -406,7 +420,7 @@ export const artworks: Artwork[] = [
     artist: "Orfèvre Ashanti",
     period: "XIXe siècle",
     origin: "Ghana",
-    image: artwork1,
+    image: image5,
     category: "jewelry",
     description: {
       fr: "Ce bracelet en or massif témoigne de la maîtrise de l'orfèvrerie ashanti. Les motifs complexes reflètent la richesse et le pouvoir royal.",
@@ -434,7 +448,7 @@ export const artworks: Artwork[] = [
     artist: "Potier Nok",
     period: "500 av. J.-C.",
     origin: "Nigeria",
-    image: artwork2,
+    image: image6,
     category: "pottery",
     description: {
       fr: "Ce vase funéraire de la culture Nok est l'un des plus anciens exemples de céramique africaine. Sa forme élégante témoigne d'une civilisation avancée.",
@@ -462,7 +476,7 @@ export const artworks: Artwork[] = [
     artist: "Facteur Mandingue",
     period: "XXe siècle",
     origin: "Gambie",
-    image: artwork3,
+    image: image7,
     category: "musical",
     description: {
       fr: "Cette kora traditionnelle à 21 cordes est l'instrument emblématique des griots mandingues. Sa caisse de résonance en calebasse produit des sons envoûtants.",
@@ -478,6 +492,202 @@ export const artworks: Artwork[] = [
       fr: "La kora est l'instrument sacré des griots, gardiens de la tradition orale et de l'histoire des peuples mandingues.",
       en: "The kora is the sacred instrument of griots, guardians of oral tradition and history of Mandinka peoples.",
       wo: "Kora mooy xalam bu sañ-sañ bu griot, ay wone bu aada bu wax ak tarix bu xeet Mandingue.",
+    },
+  },
+  {
+    id: "13",
+    title: {
+      fr: "Statuette Ancestrale",
+      en: "Ancestral Figurine",
+      wo: "Sëriñ bu Njëkk",
+    },
+    artist: "Sculpteur Serer",
+    period: "XVIe siècle",
+    origin: "Sénégal",
+    image: image8,
+    category: "sculpture",
+    description: {
+      fr: "Cette statuette ancestrale serer représente un gardien spirituel de la communauté. Les traits stylisés et les symboles gravés témoignent d'une profonde spiritualité.",
+      en: "This Serer ancestral figurine represents a spiritual guardian of the community. The stylized features and engraved symbols testify to deep spirituality.",
+      wo: "Sëriñ bii bu njëkk bu Serer moo melni gannaw bu kersa bu jëfandikoo bi. Sañse yi ak aal yu bind moo wane kersa bu gatt.",
+    },
+    history: {
+      fr: "Utilisée lors de rituels de protection, cette statuette était conservée dans les sanctuaires familiaux et transmise aux générations futures.",
+      en: "Used during protection rituals, this figurine was kept in family shrines and passed down to future generations.",
+      wo: "Jëfandikoo ci rite yu gann, sëriñ bii dañu koy tëgg ci sanctuaire yu kër te yàmb ci aw yi ñëw.",
+    },
+    culturalContext: {
+      fr: "Dans la culture serer, les statuettes ancestrales servent d'intermédiaires entre les vivants et les ancêtres, assurant la protection et la guidance spirituelle.",
+      en: "In Serer culture, ancestral figurines serve as intermediaries between the living and the ancestors, ensuring protection and spiritual guidance.",
+      wo: "Ci aada Serer, sëriñ yu njëkk mooy jëfandikoo ci ëlb yu nekk ak yu dee, danuy gann te joxe ci kersa.",
+    },
+  },
+  {
+    id: "14",
+    title: {
+      fr: "Masque de Société Secrète",
+      en: "Secret Society Mask",
+      wo: "Mask bu Société Secrète",
+    },
+    artist: "Maître Masque Diola",
+    period: "XVIIe siècle",
+    origin: "Casamance, Sénégal",
+    image: image9,
+    category: "masks",
+    description: {
+      fr: "Ce masque sacré était utilisé par les sociétés secrètes diola lors de cérémonies d'initiation. Ses cornes stylisées symbolisent la force et la sagesse.",
+      en: "This sacred mask was used by Diola secret societies during initiation ceremonies. Its stylized horns symbolize strength and wisdom.",
+      wo: "Mask bii bu sañ-sañ dañu koy jëfandikoo ci société secrète yu Diola ci ceremoni yu initiation. Bañ yi bu sañse moo melni doole ak xam-xam.",
+    },
+    history: {
+      fr: "Gardé jalousement par les initiés, ce masque n'apparaissait qu'lors de rituels spéciaux marquant le passage à l'âge adulte.",
+      en: "Jealously guarded by initiates, this mask only appeared during special rituals marking the passage to adulthood.",
+      wo: "Initié yi danuy ko gëm bu gëm, mask bii dañu koy wonee ci rite yu bees yu melni doxal ci mag.",
+    },
+    culturalContext: {
+      fr: "Les sociétés secrètes diola utilisent les masques comme véhicules de transformation spirituelle et de transmission des connaissances ancestrales.",
+      en: "Diola secret societies use masks as vehicles for spiritual transformation and transmission of ancestral knowledge.",
+      wo: "Société secrète yu Diola danuy jëfandikoo mask yi ngir coppite ci kersa ak yàmb xam-xam bu njëkk.",
+    },
+  },
+  {
+    id: "15",
+    title: {
+      fr: "Coussin Royal",
+      en: "Royal Cushion",
+      wo: "Coussin bu Buur",
+    },
+    artist: "Tisserand Royal",
+    period: "XVIIIe siècle",
+    origin: "Royaume du Sine",
+    image: image10,
+    category: "textiles",
+    description: {
+      fr: "Ce coussin royal en soie brodée était réservé aux cérémonies officielles du royaume du Sine. Les motifs dorés racontent l'histoire des rois successeurs.",
+      en: "This royal silk embroidered cushion was reserved for official ceremonies of the Sine kingdom. The golden patterns tell the story of successive kings.",
+      wo: "Coussin bii bu buur bu soie bu xànjar dañu koy tëgg ngir ceremoni yu nguur yu Sine. Motif yu wuru dañuy wax tarix bu buur yu topp.",
+    },
+    history: {
+      fr: "Confectionné par les meilleurs artisans du royaume, ce coussin accompagnait le roi lors des audiences royales et des fêtes traditionnelles.",
+      en: "Crafted by the kingdom's finest artisans, this cushion accompanied the king during royal audiences and traditional festivities.",
+      wo: "Def nañu ko artisan yu gën ci nguur gi, coussin bii dafa bokk ak buur ci audience yu nguur ak fête yu cosaan.",
+    },
+    culturalContext: {
+      fr: "Dans la monarchie sine, les objets textiles royaux symbolisent la continuité dynastique et la légitimité du pouvoir royal.",
+      en: "In the Sine monarchy, royal textile objects symbolize dynastic continuity and the legitimacy of royal power.",
+      wo: "Ci nguur bu Sine, liggéey yu tiil yu buur danuy melni topp bu doole ak dëgg bu doole bu buur.",
+    },
+  },
+  {
+    id: "16",
+    title: {
+      fr: "Parure de Cérémonie",
+      en: "Ceremonial Jewelry Set",
+      wo: "Yërmënde bu Ceremoni",
+    },
+    artist: "Orfèvre Toucouleur",
+    period: "XIXe siècle",
+    origin: "Vallée du Fleuve Sénégal",
+    image: hommeImage,
+    category: "jewelry",
+    description: {
+      fr: "Cette parure complète en argent massif était portée par les notables toucouleurs lors des grandes cérémonies. Chaque élément a une signification spirituelle précise.",
+      en: "This complete solid silver jewelry set was worn by Toucouleur dignitaries during major ceremonies. Each element has a precise spiritual meaning.",
+      wo: "Yërmënde bii bu sëmën bu mag dañu koy takk ay notable Toucouleur ci ceremoni yu mag. Liggéey bu nekk am solo bu kersa bu baax.",
+    },
+    history: {
+      fr: "Transmise de père en fils, cette parure marquait l'appartenance à l'élite sociale et religieuse de la communauté toucouleur.",
+      en: "Passed from father to son, this jewelry set marked membership in the social and religious elite of the Toucouleur community.",
+      wo: "Yàmb ci baay ci doom ju góor, yërmënde bii dafa aal ci boroom ak marabout yu jëfandikoo Toucouleur.",
+    },
+    culturalContext: {
+      fr: "Chez les Toucouleurs, les bijoux en argent ont une dimension protective et sont considérés comme des talismans contre les forces négatives.",
+      en: "Among the Toucouleurs, silver jewelry has a protective dimension and is considered as talismans against negative forces.",
+      wo: "Ci Toucouleur yi, yërmënde yu sëmën danuy gann te xalaat nañu koy ngir talisman ci doole yu bon.",
+    },
+  },
+  {
+    id: "17",
+    title: {
+      fr: "Vase Rituel d'Eau Sacrée",
+      en: "Sacred Water Ritual Vase",
+      wo: "Bëñ bu Ndox bu Sañ-sañ",
+    },
+    artist: "Potier Lébou",
+    period: "XXe siècle",
+    origin: "Presqu'île du Cap-Vert",
+    image: image11,
+    category: "pottery",
+    description: {
+      fr: "Ce vase rituel servait à conserver l'eau sacrée utilisée lors des cérémonies de purification lébou. Sa forme unique facilite les ablutions rituelles.",
+      en: "This ritual vase was used to store sacred water during Lebou purification ceremonies. Its unique shape facilitates ritual ablutions.",
+      wo: "Bëñ bii bu rite dañu koy jëfandikoo ngir tëgg ndox bu sañ-sañ ci ceremoni yu sedd yu Lébou. Mel bii bu benn moo gën ablution yu rite.",
+    },
+    history: {
+      fr: "Façonné selon des techniques séculaires, ce vase était béni par les marabouts avant chaque usage ceremoniel.",
+      en: "Shaped using centuries-old techniques, this vase was blessed by marabouts before each ceremonial use.",
+      wo: "Def ci technique yu aw yi jiitu, bëñ bii dañu koy barkeel marabout yi ba jëfandikoo ci ceremoni.",
+    },
+    culturalContext: {
+      fr: "Dans la tradition lébou, l'eau sacrée est un élément central des rituels de protection maritime et de bénédiction des pêcheurs.",
+      en: "In Lebou tradition, sacred water is a central element in maritime protection rituals and fishermen's blessings.",
+      wo: "Ci aada Lébou, ndox bu sañ-sañ moo mag ci rite yu gann ci géej ak barkeel bu jëf-jën.",
+    },
+  },
+  {
+    id: "18",
+    title: {
+      fr: "Balafon Ancestral",
+      en: "Ancestral Balafon",
+      wo: "Balafon bu Njëkk",
+    },
+    artist: "Luthier Malinké",
+    period: "XIXe siècle",
+    origin: "Haute Guinée",
+    image: image12,
+    category: "musical",
+    description: {
+      fr: "Ce balafon ancestral à 21 lames était l'instrument sacré des griots malinké. Ses résonateurs en calebasse produisent une sonorité unique reconnue par tous.",
+      en: "This ancestral 21-key balafon was the sacred instrument of Malinke griots. Its calabash resonators produce a unique sound recognized by all.",
+      wo: "Balafon bii bu njëkk ak 21 lame mooy xalam bu sañ-sañ bu griot Malinké. Bàkku bii bu calabash moo def may bàkku bu benn bu ñépp xam.",
+    },
+    history: {
+      fr: "Transmis dans la même famille de griots depuis sept générations, ce balafon a accompagné les plus grands récits épiques de l'empire mandingue.",
+      en: "Passed down in the same griot family for seven generations, this balafon has accompanied the greatest epic tales of the Mandinka empire.",
+      wo: "Yàmb ci benn kër bu griot ci juróom-ñeett aw, balafon bii dafa bokk ay épopée yu mag yu empire Mandingue.",
+    },
+    culturalContext: {
+      fr: "Le balafon occupe une place sacrée dans la culture malinké, servant d'intermédiaire entre le monde terrestre et spirituel lors des récitations.",
+      en: "The balafon occupies a sacred place in Malinke culture, serving as an intermediary between the earthly and spiritual worlds during recitations.",
+      wo: "Balafon bii am barab bu sañ-sañ ci aada Malinké, mooy jikko ci ëlb suuf ak kersa ci wax.",
+    },
+  },
+  {
+    id: "19",
+    title: {
+      fr: "Masque de Chasseur",
+      en: "Hunter's Mask",
+      wo: "Mask bu Gaynde",
+    },
+    artist: "Sculpteur Chasseur Bambara",
+    period: "XVIIe siècle",
+    origin: "Mali",
+    image: image13,
+    category: "masks",
+    description: {
+      fr: "Ce masque de chasseur bambara était porté lors des rituels de départ à la chasse. Les cornes d'antilope sculptées invoquent l'esprit de l'animal chassé.",
+      en: "This Bambara hunter's mask was worn during hunting departure rituals. The carved antelope horns invoke the spirit of the hunted animal.",
+      wo: "Mask bii bu gaynde Bambara dañu koy takk ci rite yu dem gaynde. Bañ bu antilope bu sañse moo wutu rab bu mala bi.",
+    },
+    history: {
+      fr: "Utilisé par une confrérie de chasseurs respectés, ce masque était considéré comme possédant des pouvoirs magiques de réussite à la chasse.",
+      en: "Used by a brotherhood of respected hunters, this mask was considered to possess magical powers for hunting success.",
+      wo: "Jëfandikoo ci confrérie bu gaynde yu ñu gëm, mask bii dañu koy xalaat ni am doole bu màgic ngir réussite ci gaynde.",
+    },
+    culturalContext: {
+      fr: "Dans la société bambara, les masques de chasseurs établissent une communion spirituelle avec le gibier et garantissent le respect des lois de la nature.",
+      en: "In Bambara society, hunter's masks establish spiritual communion with game and ensure respect for the laws of nature.",
+      wo: "Ci société Bambara, mask yu gaynde danuy def jëfandikoo ci kersa ak mala te di dëgg yoon bu yaram.",
     },
   },
 ];

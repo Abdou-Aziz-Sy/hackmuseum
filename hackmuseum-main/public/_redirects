@@ -1,0 +1,8 @@
+# Configuration pour éviter les erreurs 404 lors du refresh des pages
+# Cette configuration fonctionne avec Netlify, Vercel, et autres plateformes de déploiement
+
+# Toutes les routes doivent rediriger vers index.html pour React Router
+/*    /index.html   200
+
+# Configuration pour Apache (.htaccess alternative)
+# Si déployé sur un serveur Apache, utilisez .htaccess à la place

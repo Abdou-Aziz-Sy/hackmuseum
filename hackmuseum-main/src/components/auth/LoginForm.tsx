@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Loader2, Eye, EyeOff } from "lucide-react";
+import { Loader2, Eye, EyeOff, Home } from "lucide-react";
 
 const LoginForm = () => {
   const { login } = useAuth();
@@ -119,20 +119,24 @@ const LoginForm = () => {
             </Button>
           </form>
           
-          <div className="mt-6 text-center text-sm">
-            <p className="text-muted-foreground">
-              Pas encore de compte ?{" "}
-              <Link to="/register" className="text-primary hover:underline">
-                Créer un compte
+          <div className="mt-6 space-y-4">
+            <div className="text-center text-sm">
+              <p className="text-muted-foreground">
+                Pas encore de compte ?{" "}
+                <Link to="/register" className="text-primary hover:underline">
+                  Créer un compte
+                </Link>
+              </p>
+            </div>
+            
+            {/* Bouton pour retourner à l'accueil */}
+            <div className="text-center">
+              <Link to="/">
+                <Button variant="outline" className="w-full">
+                  <Home className="mr-2 h-4 w-4" />
+                  Retour à l'accueil
+                </Button>
               </Link>
-            </p>
-          </div>
-          
-          <div className="mt-4 p-4 bg-muted/50 rounded-lg">
-            <p className="text-sm font-medium mb-2">Comptes de démonstration :</p>
-            <div className="text-xs space-y-1">
-              <p><strong>Admin:</strong> admin@musee.sn / password123</p>
-              <p><strong>Utilisateur:</strong> user@musee.sn / password123</p>
             </div>
           </div>
         </CardContent>

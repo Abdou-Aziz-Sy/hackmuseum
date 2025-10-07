@@ -78,10 +78,18 @@ const Navigation = () => {
                 Administration
               </Link>
             ) : (
-              <Link to="/reservation" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
-                <Calendar className="h-4 w-4" />
-                Réservation
-              </Link>
+              <>
+                <Link to="/reservation" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
+                  <Calendar className="h-4 w-4" />
+                  Réservation
+                </Link>
+                {isAuthenticated && (
+                  <Link to="/my-reservations" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
+                    <User className="h-4 w-4" />
+                    Mes Réservations
+                  </Link>
+                )}
+              </>
             )}
 
             <div className="flex items-center gap-4">
@@ -114,21 +122,23 @@ const Navigation = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem asChild>
-                      <Link to="/profile" className="flex items-center gap-2">
-                        <User className="h-4 w-4" />
-                        Mon profil
-                      </Link>
-                    </DropdownMenuItem>
                     {user?.role === 'admin' && (
-                      <DropdownMenuItem asChild>
-                        <Link to="/admin" className="flex items-center gap-2">
-                          <User className="h-4 w-4" />
-                          Administration
-                        </Link>
-                      </DropdownMenuItem>
+                      <>
+                        <DropdownMenuItem asChild>
+                          <Link to="/profile" className="flex items-center gap-2">
+                            <User className="h-4 w-4" />
+                            Mon profil
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/admin" className="flex items-center gap-2">
+                            <User className="h-4 w-4" />
+                            Administration
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                      </>
                     )}
-                    <DropdownMenuSeparator />
                     <DropdownMenuItem 
                       onClick={logout}
                       className="text-destructive hover:text-destructive/90"
@@ -213,14 +223,26 @@ const Navigation = () => {
               Administration
             </Link>
           ) : (
-            <Link
-              to="/reservation"
-              className="block py-2 text-foreground hover:text-primary transition-colors flex items-center gap-2"
-              onClick={() => setIsOpen(false)}
-            >
-              <Calendar className="h-4 w-4" />
-              Réservation
-            </Link>
+            <>
+              <Link
+                to="/reservation"
+                className="block py-2 text-foreground hover:text-primary transition-colors flex items-center gap-2"
+                onClick={() => setIsOpen(false)}
+              >
+                <Calendar className="h-4 w-4" />
+                Réservation
+              </Link>
+              {isAuthenticated && (
+                <Link
+                  to="/my-reservations"
+                  className="block py-2 text-foreground hover:text-primary transition-colors flex items-center gap-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <User className="h-4 w-4" />
+                  Mes Réservations
+                </Link>
+              )}
+            </>
           )}
 
           <div className="pt-2 border-t border-border">
@@ -250,14 +272,16 @@ const Navigation = () => {
 
               {isAuthenticated ? (
                 <div className="space-y-3">
-                  <Link
-                    to="/profile"
-                    className="block py-2 text-foreground hover:text-primary transition-colors flex items-center gap-2"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <User className="h-4 w-4" />
-                    Mon profil
-                  </Link>
+                  {user?.role === 'admin' && (
+                    <Link
+                      to="/profile"
+                      className="block py-2 text-foreground hover:text-primary transition-colors flex items-center gap-2"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <User className="h-4 w-4" />
+                      Mon profil
+                    </Link>
+                  )}
                   <Button
                     variant="destructive"
                     size="sm"

@@ -6,23 +6,32 @@ export interface Reservation {
   id: string;
   visitorName: string;
   visitorEmail: string;
+  userId?: string; // ID de l'utilisateur connecté
   date: string;
   time: string;
   numberOfPeople: number;
-  status: "confirmed" | "pending" | "cancelled";
+  status: "pending" | "approved" | "rejected" | "cancelled";
   createdAt: string;
+  updatedAt?: string;
   notes?: string;
   exhibition?: string;
+  adminNotes?: string;
+  cancellationReason?: string;
+  cancelledAt?: string;
 }
 
 interface ReservationStore {
   reservations: Reservation[];
   addReservation: (reservation: Omit<Reservation, 'id' | 'createdAt' | 'status'>) => void;
   updateReservation: (id: string, data: Partial<Reservation>) => void;
+  updateReservationStatus: (id: string, status: Reservation['status'], adminNotes?: string) => void;
+  cancelReservation: (id: string, cancellationReason: string) => void;
   deleteReservation: (id: string) => void;
   getReservationById: (id: string) => Reservation | undefined;
   getReservationsByStatus: (status: Reservation['status']) => Reservation[];
   getReservationsByDate: (date: string) => Reservation[];
+  getUserReservations: (userId: string) => Reservation[];
+  canCancelReservation: (reservation: Reservation) => boolean;
 }
 
 // Création du store Zustand pour les réservations
@@ -119,6 +128,110 @@ export const useReservationStore = create<ReservationStore>((set, get) => ({
   // Obtenir les réservations par date
   getReservationsByDate: (date) => {
     return get().reservations.filter((reservation) => reservation.date === date);
+  },
+  
+  // Mettre à jour le statut d'une réservation (admin)
+  updateReservationStatus: (id, status, adminNotes) => {
+    set((state) => ({
+      reservations: state.reservations.map((reservation) => 
+        reservation.id === id 
+          ? { 
+              ...reservation, 
+              status, 
+              adminNotes,
+              updatedAt: new Date().toISOString()
+            } 
+          : reservation
+      )
+    }));
+    
+    const { addNotification } = useNotificationStore.getState();
+    const reservation = get().getReservationById(id);
+    if (reservation) {
+      let statusText = '';
+      let notificationType: 'success' | 'info' | 'error' = 'info';
+      
+      switch (status) {
+        case 'approved':
+          statusText = 'acceptée';
+          notificationType = 'success';
+          break;
+        case 'rejected':
+          statusText = 'rejetée';
+          notificationType = 'error';
+          break;
+        case 'cancelled':
+          statusText = 'annulée';
+          break;
+        default:
+          statusText = 'mise à jour';
+      }
+      
+      addNotification({
+        id: `reservation-status-${id}`,
+        title: `Réservation ${statusText}`,
+        message: `Votre réservation du ${formatDate(reservation.date)} à ${reservation.time} a été ${statusText}.`,
+        type: notificationType,
+        read: false,
+        date: new Date().toISOString(),
+        category: "reservations"
+      });
+    }
+  },
+  
+  // Annuler une réservation (utilisateur)
+  cancelReservation: (id, cancellationReason) => {
+    const reservation = get().getReservationById(id);
+    if (!reservation) return;
+    
+    if (!get().canCancelReservation(reservation)) {
+      throw new Error('Cette réservation ne peut plus être annulée');
+    }
+    
+    set((state) => ({
+      reservations: state.reservations.map((res) => 
+        res.id === id 
+          ? { 
+              ...res, 
+              status: 'cancelled' as const,
+              cancellationReason,
+              cancelledAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            } 
+          : res
+      )
+    }));
+    
+    const { addNotification } = useNotificationStore.getState();
+    addNotification({
+      id: `reservation-cancelled-${id}`,
+      title: "Réservation annulée",
+      message: `La réservation de ${reservation.visitorName} pour le ${formatDate(reservation.date)} a été annulée.`,
+      type: "info",
+      read: false,
+      date: new Date().toISOString(),
+      category: "reservations"
+    });
+  },
+  
+  // Obtenir les réservations d'un utilisateur
+  getUserReservations: (userId) => {
+    return get().reservations
+      .filter((reservation) => reservation.userId === userId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  },
+  
+  // Vérifier si une réservation peut être annulée
+  canCancelReservation: (reservation) => {
+    if (reservation.status === 'cancelled') {
+      return false;
+    }
+    
+    // Ne peut pas annuler si la date est passée
+    const reservationDateTime = new Date(`${reservation.date}T${reservation.time}`);
+    const now = new Date();
+    
+    return reservationDateTime > now;
   }
 }));
 

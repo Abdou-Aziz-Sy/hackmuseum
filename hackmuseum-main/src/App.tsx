@@ -16,6 +16,7 @@ import LoginForm from "./components/auth/LoginForm";
 import RegisterForm from "./components/auth/RegisterForm";
 import ProfileSettings from "./components/auth/ProfileSettings";
 import Reservation from "./pages/Reservation";
+import MyReservations from "./pages/MyReservations";
 import SiteQR from "./pages/SiteQR";
 import Dashboard from "./pages/admin/Dashboard";
 import ProfessionalDashboard from "./pages/admin/ProfessionalDashboard";
@@ -28,15 +29,36 @@ import Settings from "./pages/admin/Settings";
 import Notifications from "./pages/admin/Notifications";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
+import { useEffect } from "react";
+import performanceService from "./services/performance-service";
 
 const queryClient = new QueryClient();
+
+// Composant pour initialiser les services
+const AppInitializer = ({ children }: { children: React.ReactNode }) => {
+  useEffect(() => {
+    // Initialiser les services de performance
+    performanceService.initializeLazyLoading();
+    performanceService.adaptToNetworkConditions();
+    performanceService.measureImagePerformance();
+    performanceService.optimizeScrolling();
+
+    // Nettoyer à la fermeture
+    return () => {
+      performanceService.clearCache();
+    };
+  }, []);
+
+  return <>{children}</>;
+};
 
 const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <AuthProvider>
-          <TooltipProvider>
+          <AppInitializer>
+            <TooltipProvider>
             <Toaster />
             <Sonner />
             <BrowserRouter>
@@ -50,6 +72,7 @@ const App = () => (
                 <Route path="/qr-codes" element={<ErrorBoundary><QRCodes /></ErrorBoundary>} />
                 <Route path="/site-qr" element={<ErrorBoundary><SiteQR /></ErrorBoundary>} />
                 <Route path="/reservation" element={<ErrorBoundary><ProtectedRoute><Reservation /></ProtectedRoute></ErrorBoundary>} />
+                <Route path="/my-reservations" element={<ErrorBoundary><ProtectedRoute><MyReservations /></ProtectedRoute></ErrorBoundary>} />
                 
                 {/* Auth routes */}
                 <Route path="/login" element={<ErrorBoundary><LoginForm /></ErrorBoundary>} />
@@ -70,7 +93,8 @@ const App = () => (
                 <Route path="*" element={<ErrorBoundary><NotFound /></ErrorBoundary>} />
               </Routes>
             </BrowserRouter>
-          </TooltipProvider>
+            </TooltipProvider>
+          </AppInitializer>
         </AuthProvider>
       </LanguageProvider>
     </QueryClientProvider>

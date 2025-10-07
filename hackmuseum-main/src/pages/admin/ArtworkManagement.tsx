@@ -19,6 +19,9 @@ import { Plus, Edit, Trash2, Eye, Search, Filter, Upload, Download, BarChart3, Q
 import OptimizedImage from "@/components/OptimizedImage";
 import AdminNavigation from "@/components/AdminNavigation";
 import { usePreloadAssets } from "@/hooks/use-asset-loading";
+import ImageUpload from "@/components/ui/image-upload";
+import AutoTranslate from "@/components/ui/auto-translate";
+import imageUploadService from "@/services/image-upload-service";
 
 const ArtworkManagement = () => {
   const { user } = useAuth();
@@ -283,37 +286,27 @@ const ArtworkManagement = () => {
                   </DialogDescription>
                 </DialogHeader>
                 
-                <div className="space-y-6">
-                  {/* Titre */}
-                  <div className="space-y-2">
-                    <Label>Titre</Label>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                      <Input
-                        placeholder="Français"
-                        value={formData.title.fr}
-                        onChange={(e) => setFormData(prev => ({
-                          ...prev,
-                          title: { ...prev.title, fr: e.target.value }
-                        }))}
-                      />
-                      <Input
-                        placeholder="English"
-                        value={formData.title.en}
-                        onChange={(e) => setFormData(prev => ({
-                          ...prev,
-                          title: { ...prev.title, en: e.target.value }
-                        }))}
-                      />
-                      <Input
-                        placeholder="Wolof"
-                        value={formData.title.wo}
-                        onChange={(e) => setFormData(prev => ({
-                          ...prev,
-                          title: { ...prev.title, wo: e.target.value }
-                        }))}
-                      />
-                    </div>
-                  </div>
+                <Tabs defaultValue="general" className="w-full">
+                  <TabsList className="grid w-full grid-cols-4">
+                    <TabsTrigger value="general">Informations générales</TabsTrigger>
+                    <TabsTrigger value="description">Description</TabsTrigger>
+                    <TabsTrigger value="history">Histoire</TabsTrigger>
+                    <TabsTrigger value="image">Image</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="general" className="space-y-6">
+                    {/* Titre avec traduction automatique */}
+                    <AutoTranslate
+                      label="Titre de l'œuvre"
+                      value={formData.title}
+                      onChange={(titles) => setFormData(prev => ({ ...prev, title: titles }))}
+                      placeholder={{
+                        fr: "Titre en français...",
+                        en: "Title in English...",
+                        wo: "Tur ci Wolof..."
+                      }}
+                      rows={2}
+                    />
 
                   {/* Informations de base */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -354,60 +347,93 @@ const ArtworkManagement = () => {
                       </Select>
                     </div>
                   </div>
+                  </TabsContent>
 
-                  {/* Description */}
-                  <div className="space-y-2">
-                    <Label>Description</Label>
-                    <div className="space-y-2">
-                      <Textarea
-                        placeholder="Description en français"
-                        value={formData.description.fr}
-                        onChange={(e) => setFormData(prev => ({
-                          ...prev,
-                          description: { ...prev.description, fr: e.target.value }
-                        }))}
-                        rows={3}
-                      />
-                      <Textarea
-                        placeholder="Description in English"
-                        value={formData.description.en}
-                        onChange={(e) => setFormData(prev => ({
-                          ...prev,
-                          description: { ...prev.description, en: e.target.value }
-                        }))}
-                        rows={3}
-                      />
-                      <Textarea
-                        placeholder="Faramfacce ci Wolof"
-                        value={formData.description.wo}
-                        onChange={(e) => setFormData(prev => ({
-                          ...prev,
-                          description: { ...prev.description, wo: e.target.value }
-                        }))}
-                        rows={3}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Image */}
-                  <div className="space-y-2">
-                    <Label>URL de l'image</Label>
-                    <Input
-                      placeholder="https://example.com/image.jpg"
-                      value={formData.image}
-                      onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
+                  <TabsContent value="description" className="space-y-6">
+                    {/* Description avec traduction automatique */}
+                    <AutoTranslate
+                      label="Description de l'œuvre"
+                      value={formData.description}
+                      onChange={(descriptions) => setFormData(prev => ({ ...prev, description: descriptions }))}
+                      placeholder={{
+                        fr: "Description en français...",
+                        en: "Description in English...",
+                        wo: "Faramfacce ci Wolof..."
+                      }}
+                      rows={4}
                     />
-                  </div>
+                  </TabsContent>
 
-                  <div className="flex justify-end space-x-2">
-                    <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                      Annuler
-                    </Button>
-                    <Button onClick={handleSaveArtwork}>
-                      {editingArtwork ? "Modifier" : "Ajouter"}
-                    </Button>
-                  </div>
+                  <TabsContent value="history" className="space-y-6">
+                    {/* Histoire avec traduction automatique */}
+                    <AutoTranslate
+                      label="Histoire de l'œuvre"
+                      value={formData.history}
+                      onChange={(history) => setFormData(prev => ({ ...prev, history }))}
+                      placeholder={{
+                        fr: "Histoire et origine de l'œuvre en français...",
+                        en: "History and origin of the artwork in English...",
+                        wo: "Tarix ak jiitu bu liggéey ci Wolof..."
+                      }}
+                      rows={4}
+                    />
+
+                    {/* Contexte culturel avec traduction automatique */}
+                    <AutoTranslate
+                      label="Contexte culturel"
+                      value={formData.culturalContext}
+                      onChange={(context) => setFormData(prev => ({ ...prev, culturalContext: context }))}
+                      placeholder={{
+                        fr: "Contexte culturel et signification en français...",
+                        en: "Cultural context and significance in English...",
+                        wo: "Jikko bu aada ak biir ci Wolof..."
+                      }}
+                      rows={4}
+                    />
+                  </TabsContent>
+
+                  <TabsContent value="image" className="space-y-6">
+
+                    {/* Upload d'image */}
+                    <ImageUpload
+                      label="Image de l'œuvre"
+                      currentImage={imageUploadService.getUploadedImage(formData.image)}
+                      onImageUploaded={(imageUrl) => setFormData(prev => ({ ...prev, image: imageUrl }))}
+                      maxSize={5}
+                      accept="image/jpeg,image/png,image/webp,image/jpg"
+                    />
+                  </TabsContent>
+                </Tabs>
+
+                <div className="flex justify-end space-x-2 pt-4 border-t">
+                  <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                    Annuler
+                  </Button>
+                  <Button onClick={handleSaveArtwork}>
+                    {editingArtwork ? "Modifier" : "Ajouter"}
+                  </Button>
                 </div>
+              </DialogContent>
+            </Dialog>
+
+            {/* Dialog de confirmation de suppression */}
+            <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Confirmer la suppression</DialogTitle>
+                  <DialogDescription>
+                    Êtes-vous sûr de vouloir supprimer l'œuvre "{artworkToDelete?.title[language]}" ?
+                    Cette action est irréversible.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+                    Annuler
+                  </Button>
+                  <Button variant="destructive" onClick={confirmDeleteArtwork}>
+                    Supprimer
+                  </Button>
+                </DialogFooter>
               </DialogContent>
             </Dialog>
           </div>
@@ -419,7 +445,7 @@ const ArtworkManagement = () => {
             <Card key={artwork.id} className="overflow-hidden">
               <div className="aspect-square relative">
                 <OptimizedImage
-                  src={artwork.image}
+                  src={imageUploadService.getUploadedImage(artwork.image)}
                   alt={artwork.title[language]}
                   className="w-full h-full"
                 />
@@ -453,7 +479,7 @@ const ArtworkManagement = () => {
                   <Button 
                     size="sm" 
                     variant="outline"
-                    onClick={() => handleDeleteArtwork(artwork.id)}
+                    onClick={() => handleDeleteArtwork(artwork)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
