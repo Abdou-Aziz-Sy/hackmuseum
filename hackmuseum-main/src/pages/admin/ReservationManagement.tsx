@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
   import { useLanguage } from "@/contexts/LanguageContext";
   import { useNotificationStore } from "@/services/notification-service";
   import AdminNavigation from "@/components/AdminNavigation";
-  import { useReservationStore } from "@/services/reservation-service";
+  import { useReservationStore, Reservation as StoreReservation } from "@/services/reservation-service";
 
 // Types pour les réservations
 interface Reservation {
@@ -144,7 +144,7 @@ const getStatusLabel = (status: Reservation["status"]) => {
 const ReservationManagement = () => {
   const { t } = useLanguage();
   const { addNotification } = useNotificationStore();
-  const { reservations: storeReservations } = useReservationStore();
+  const { reservations: storeReservations, updateReservationStatus } = useReservationStore();
 
   const mapStoreToAdmin = (items: any[]): Reservation[] =>
     items.map((r: any) => ({
@@ -203,6 +203,11 @@ const ReservationManagement = () => {
     );
     
     setReservations(updatedReservations);
+    
+    // Propager la mise à jour au store (côté client)
+    const mappedStoreStatus: StoreReservation['status'] =
+      newStatus === 'confirmed' ? 'approved' : newStatus;
+    updateReservationStatus(id, mappedStoreStatus);
     
     const reservation = reservations.find(r => r.id === id);
     if (reservation) {

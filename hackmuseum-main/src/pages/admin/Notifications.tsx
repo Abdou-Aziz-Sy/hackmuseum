@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useReservationStore } from "@/services/reservation-service";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Bell, Check, X, Clock, AlertCircle, Calendar, Users, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,7 @@ interface Notification {
 }
 
 const Notifications = () => {
+  const { reservations: storeReservations, updateReservationStatus } = useReservationStore();
   const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: '1',
@@ -111,6 +113,18 @@ const Notifications = () => {
   }, [notifications]);
 
   const handleApproveReservation = (notification: Notification) => {
+    // Propager au store (si on trouve une correspondance)
+    const meta = notification.metadata;
+    if (meta) {
+      const match = storeReservations.find(r => 
+        r.visitorEmail === meta.userEmail &&
+        r.date === meta.visitDate &&
+        r.numberOfPeople === meta.groupSize
+      );
+      if (match) {
+        updateReservationStatus(match.id, 'approved');
+      }
+    }
     setNotifications(prev => 
       prev.map(n => 
         n.id === notification.id 
@@ -128,6 +142,19 @@ const Notifications = () => {
     if (!selectedNotification || !rejectReason.trim()) {
       toast.error("Veuillez indiquer une raison pour le rejet");
       return;
+    }
+
+    // Propager au store (si on trouve une correspondance)
+    const meta = selectedNotification.metadata;
+    if (meta) {
+      const match = storeReservations.find(r => 
+        r.visitorEmail === meta.userEmail &&
+        r.date === meta.visitDate &&
+        r.numberOfPeople === meta.groupSize
+      );
+      if (match) {
+        updateReservationStatus(match.id, 'rejected', rejectReason.trim());
+      }
     }
 
     setNotifications(prev => 
