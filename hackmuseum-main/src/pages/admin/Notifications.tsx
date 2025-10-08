@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Bell, Check, X, Clock, AlertCircle, Calendar, Users, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -89,6 +89,26 @@ const Notifications = () => {
   const [showRejectDialog, setShowRejectDialog] = useState(false);
   const [rejectReason, setRejectReason] = useState('');
   const [activeTab, setActiveTab] = useState('all');
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('mcn_admin_notifications');
+      if (raw) {
+        const data = JSON.parse(raw) as (Omit<Notification, 'timestamp'> & { timestamp: string })[];
+        const hydrated: Notification[] = data.map(n => ({ ...n, timestamp: new Date(n.timestamp) }));
+        setNotifications(hydrated);
+      }
+    } catch {}
+  }, []);
+
+  // Persist to localStorage on change
+  useEffect(() => {
+    try {
+      const serializable = notifications.map(n => ({ ...n, timestamp: n.timestamp.toISOString() }));
+      localStorage.setItem('mcn_admin_notifications', JSON.stringify(serializable));
+    } catch {}
+  }, [notifications]);
 
   const handleApproveReservation = (notification: Notification) => {
     setNotifications(prev => 
