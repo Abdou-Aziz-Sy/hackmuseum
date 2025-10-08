@@ -83,7 +83,7 @@ const AdminNavigation = () => {
     <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/admin" className="flex items-center gap-3 font-serif text-xl font-bold text-primary hover:opacity-80 transition-opacity">
+          <Link to="/admin" className="flex items-center gap-3 font-serif text-xl font-bold text-primary hover:opacity-80 transition-opacity shrink-0">
             <OptimizedImage 
               src={hommeImage} 
               alt="MCN Admin Logo" 
@@ -93,7 +93,7 @@ const AdminNavigation = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2 overflow-x-auto whitespace-nowrap">
             {navigationItems.map((item) => (
               <Button
                 key={item.name}
@@ -110,7 +110,7 @@ const AdminNavigation = () => {
           </div>
 
           {/* User menu */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4 shrink-0">
             <div className="text-sm">
               <p className="font-medium">{user.name}</p>
               <p className="text-muted-foreground text-xs">Administrateur</p>

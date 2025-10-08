@@ -31,6 +31,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 import performanceService from "./services/performance-service";
+import { useReservationStore } from "./services/reservation-service";
 
 const queryClient = new QueryClient();
 
@@ -43,9 +44,30 @@ const AppInitializer = ({ children }: { children: React.ReactNode }) => {
     performanceService.measureImagePerformance();
     performanceService.optimizeScrolling();
 
+    // Hydrater le store des réservations depuis localStorage et persister les changements
+    let unsubscribe: (() => void) | undefined;
+    if (typeof window !== "undefined") {
+      try {
+        const raw = localStorage.getItem("mcn_reservations");
+        if (raw) {
+          const data = JSON.parse(raw);
+          // Hydrate sans déclencher de re-render inutile
+          useReservationStore.setState({ reservations: data }, false);
+        }
+      } catch {}
+
+      // Persister à chaque changement du store
+      unsubscribe = useReservationStore.subscribe((state) => {
+        try {
+          localStorage.setItem("mcn_reservations", JSON.stringify(state.reservations));
+        } catch {}
+      });
+    }
+
     // Nettoyer à la fermeture
     return () => {
       performanceService.clearCache();
+      if (unsubscribe) unsubscribe();
     };
   }, []);
 

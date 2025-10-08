@@ -9,12 +9,14 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Calendar, Clock, Users, CheckCircle } from "lucide-react";
-import { useNotificationStore } from "@/services/notification-service";
+import { createReservation } from "@/services/reservation-service";
 
 const ReservationForm = () => {
   const { user, isAuthenticated } = useAuth();
   const { t } = useLanguage();
   const [formData, setFormData] = useState({
+    visitorName: "",
+    visitorEmail: "",
     visitDate: "",
     timeSlot: "",
     numberOfVisitors: 1,
@@ -53,9 +55,6 @@ const ReservationForm = () => {
 
     setIsLoading(true);
     setError("");
-    
-    // Récupérer la fonction addNotification du store
-    const { addNotification } = useNotificationStore.getState();
 
     // Validation côté client
     if (!formData.visitDate) {
@@ -85,20 +84,29 @@ const ReservationForm = () => {
     }
 
     try {
-      // Simuler une API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Envoyer une notification à l'administrateur
-      addNotification({
-        title: "Nouvelle réservation",
-        message: `${user?.name || 'Un utilisateur'} a réservé pour ${formData.numberOfVisitors} personne(s) le ${formatDate(formData.visitDate)} à ${getTimeLabel(formData.timeSlot)}`,
-        type: "info",
-        priority: "high",
-        category: "reservation",
-        dismissible: true,
-        autoClose: false
-      });
-      
+      // Simuler un court délai réseau
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Construire les champs requis par le store
+      const payload = {
+        visitorName: user?.name || formData.visitorName.trim(),
+        visitorEmail: user?.email || formData.visitorEmail.trim(),
+        userId: user?.id,
+        date: formData.visitDate,
+        time: formData.timeSlot,
+        numberOfPeople: formData.numberOfVisitors,
+        notes: formData.notes?.trim() || undefined,
+      };
+
+      if (!payload.visitorName || !payload.visitorEmail) {
+        setIsLoading(false);
+        setError("Veuillez renseigner votre nom et votre email");
+        return;
+      }
+
+      // Créer la réservation dans le store (et notifier l'admin côté service)
+      createReservation(payload as any);
+
       setSuccess(true);
     } catch (err) {
       setError("Une erreur est survenue lors de la réservation");
@@ -156,6 +164,33 @@ const ReservationForm = () => {
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
+          )}
+
+          {!isAuthenticated && (
+            <div className="grid grid-cols-1 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="visitorName">Nom et prénom</Label>
+                <Input
+                  id="visitorName"
+                  type="text"
+                  value={formData.visitorName}
+                  onChange={(e) => handleChange("visitorName", e.target.value)}
+                  placeholder="Ex: Jean Dupont"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="visitorEmail">Email</Label>
+                <Input
+                  id="visitorEmail"
+                  type="email"
+                  value={formData.visitorEmail}
+                  onChange={(e) => handleChange("visitorEmail", e.target.value)}
+                  placeholder="Ex: jean.dupont@example.com"
+                  required
+                />
+              </div>
+            </div>
           )}
 
           <div className="space-y-2">
