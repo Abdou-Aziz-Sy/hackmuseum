@@ -12,46 +12,23 @@ import {
   Check
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useRef } from "react";
+import { QRCodeCanvas } from "qrcode.react";
 
 const SiteQRCode = () => {
   const { language } = useLanguage();
-  const [qrCodeData, setQrCodeData] = useState<string>("");
   const [isCopied, setIsCopied] = useState(false);
-  const [siteUrl] = useState(window.location.origin);
-
-  // Générer le QR code (simulation)
-  useEffect(() => {
-    // En réalité, vous utiliseriez une bibliothèque comme qrcode.js
-    // Ici, nous simulons la génération d'un QR code
-    setQrCodeData(siteUrl);
-  }, [siteUrl]);
+  const siteUrl = "https://hackmuseum.vercel.app/";
+  const qrRef = useRef<HTMLCanvasElement | null>(null);
 
   const handleDownload = () => {
-    // Logique de téléchargement du QR code
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = 200;
-    canvas.height = 200;
-    
-    // Simulation d'un QR code
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, 200, 200);
-    
-    // Motif de QR code simulé
-    for (let i = 0; i < 200; i += 10) {
-      for (let j = 0; j < 200; j += 10) {
-        if ((i + j) % 20 === 0) {
-          ctx.fillStyle = '#fff';
-          ctx.fillRect(i, j, 8, 8);
-        }
-      }
-    }
-
-    const link = document.createElement('a');
-    link.download = 'mcn-qr-code.png';
-    link.href = canvas.toDataURL();
+    // Téléchargement du QR code réel rendu par QRCodeCanvas
+    const canvas = qrRef.current;
+    if (!canvas) return;
+    const dataUrl = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.download = "mcn-qr-code.png";
+    link.href = dataUrl;
     link.click();
   };
 
@@ -98,18 +75,14 @@ const SiteQRCode = () => {
         {/* QR Code */}
         <div className="flex justify-center">
           <div className="relative">
-            <div className="w-48 h-48 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center">
-              {/* Simulation d'un QR code */}
-              <div className="grid grid-cols-8 gap-1">
-                {Array.from({ length: 64 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className={`w-2 h-2 ${
-                      Math.random() > 0.5 ? 'bg-black' : 'bg-white'
-                    }`}
-                  />
-                ))}
-              </div>
+            <div className="bg-white p-2 border-2 border-gray-300 rounded-lg">
+              <QRCodeCanvas
+                value={siteUrl}
+                size={192}
+                level="H"
+                includeMargin
+                ref={qrRef}
+              />
             </div>
             <Badge className="absolute -top-2 -right-2">
               <Smartphone className="h-3 w-3 mr-1" />
