@@ -1,16 +1,17 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Search, Filter, MoreHorizontal, Trash2, Edit, Eye, CheckCircle, XCircle, Clock } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useNotificationStore } from "@/services/notification-service";
-import AdminNavigation from "@/components/AdminNavigation";
+import { useState, useEffect } from "react";
+  import { Button } from "@/components/ui/button";
+  import { Input } from "@/components/ui/input";
+  import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+  import { Badge } from "@/components/ui/badge";
+  import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+  import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+  import { Calendar, Search, Filter, MoreHorizontal, Trash2, Edit, Eye, CheckCircle, XCircle, Clock } from "lucide-react";
+  import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+  import { useLanguage } from "@/contexts/LanguageContext";
+  import { useNotificationStore } from "@/services/notification-service";
+  import AdminNavigation from "@/components/AdminNavigation";
+  import { useReservationStore } from "@/services/reservation-service";
 
 // Types pour les réservations
 interface Reservation {
@@ -100,10 +101,13 @@ const formatDate = (dateString: string) => {
 // Formater l'heure pour l'affichage
 const formatTimeSlot = (timeSlot: string) => {
   const timeSlots: Record<string, string> = {
-    "09:00": "9h00 - 10h30",
-    "10:30": "10h30 - 12h00",
+    "10:00": "10h00 - 11h30",
+    "11:30": "11h30 - 13h00",
     "14:00": "14h00 - 15h30",
-    "15:30": "15h30 - 17h00"
+    "15:30": "15h30 - 17h00",
+    // Compatibilité anciens créneaux
+    "09:00": "9h00 - 10h30",
+    "10:30": "10h30 - 12h00"
   };
   
   return timeSlots[timeSlot] || timeSlot;
@@ -140,13 +144,43 @@ const getStatusLabel = (status: Reservation["status"]) => {
 const ReservationManagement = () => {
   const { t } = useLanguage();
   const { addNotification } = useNotificationStore();
-  const [reservations, setReservations] = useState<Reservation[]>(mockReservations);
+  const { reservations: storeReservations } = useReservationStore();
+
+  const mapStoreToAdmin = (items: any[]): Reservation[] =>
+    items.map((r: any) => ({
+      id: r.id,
+      visitorName: r.visitorName,
+      email: r.visitorEmail,
+      phone: "",
+      date: r.date,
+      timeSlot: r.time,
+      numberOfVisitors: r.numberOfPeople,
+      status: r.status === 'approved' 
+        ? 'confirmed' 
+        : (r.status === 'cancelled' || r.status === 'rejected') 
+          ? 'cancelled' 
+          : 'pending',
+      notes: r.notes,
+      createdAt: r.createdAt,
+    }));
+
+  const [reservations, setReservations] = useState<Reservation[]>(
+    (storeReservations && storeReservations.length)
+      ? mapStoreToAdmin(storeReservations)
+      : mockReservations
+  );
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<Reservation["status"] | "all">("all");
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  useEffect(() => {
+    setReservations((storeReservations && storeReservations.length)
+      ? mapStoreToAdmin(storeReservations)
+      : mockReservations);
+  }, [storeReservations]);
 
   // Filtrer les réservations
   const filteredReservations = reservations.filter(reservation => {
