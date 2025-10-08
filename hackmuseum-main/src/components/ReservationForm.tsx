@@ -25,25 +25,64 @@ const ReservationForm = () => {
   const [success, setSuccess] = useState(false);
 
   const timeSlots = [
-    { value: "09:00", label: "9h00 - 10h30" },
-    { value: "10:30", label: "10h30 - 12h00" },
+    { value: "10:00", label: "10h00 - 11h30" },
+    { value: "11:30", label: "11h30 - 13h00" },
     { value: "14:00", label: "14h00 - 15h30" },
     { value: "15:30", label: "15h30 - 17h00" },
   ];
 
+  // Helpers pour l'affichage et la validation
+  const formatDate = (isoDate: string) => {
+    try {
+      return new Date(isoDate).toLocaleDateString("fr-FR", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } catch {
+      return isoDate;
+    }
+  };
+
+  const getTimeLabel = (value: string) =>
+    timeSlots.find((s) => s.value === value)?.label || value;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!isAuthenticated) {
-      setError("Vous devez être connecté pour effectuer une réservation");
-      return;
-    }
 
     setIsLoading(true);
     setError("");
     
     // Récupérer la fonction addNotification du store
     const { addNotification } = useNotificationStore.getState();
+
+    // Validation côté client
+    if (!formData.visitDate) {
+      setIsLoading(false);
+      setError("Veuillez choisir une date de visite");
+      return;
+    }
+
+    // Empêcher les réservations le dimanche (0) et le lundi (1)
+    const visitDay = new Date(formData.visitDate).getDay();
+    if (visitDay === 0 || visitDay === 1) {
+      setIsLoading(false);
+      setError("Le musée est fermé le dimanche et le lundi. Veuillez choisir un autre jour.");
+      return;
+    }
+
+    if (!formData.timeSlot) {
+      setIsLoading(false);
+      setError("Veuillez sélectionner un créneau horaire");
+      return;
+    }
+
+    if (formData.numberOfVisitors < 1 || formData.numberOfVisitors > 30) {
+      setIsLoading(false);
+      setError("Le nombre de visiteurs doit être compris entre 1 et 30");
+      return;
+    }
 
     try {
       // Simuler une API call
@@ -119,17 +158,6 @@ const ReservationForm = () => {
             </Alert>
           )}
 
-          {!isAuthenticated && (
-            <Alert>
-              <AlertDescription>
-                Vous devez être connecté pour effectuer une réservation.{" "}
-                <Button variant="link" className="p-0 h-auto">
-                  Se connecter
-                </Button>
-              </AlertDescription>
-            </Alert>
-          )}
-
           <div className="space-y-2">
             <Label htmlFor="visitDate">Date de visite</Label>
             <Input
@@ -181,14 +209,14 @@ const ReservationForm = () => {
                 type="button"
                 variant="outline"
                 size="sm"
-                onClick={() => handleChange("numberOfVisitors", Math.min(20, formData.numberOfVisitors + 1))}
-                disabled={formData.numberOfVisitors >= 20}
+                onClick={() => handleChange("numberOfVisitors", Math.min(30, formData.numberOfVisitors + 1))}
+                disabled={formData.numberOfVisitors >= 30}
               >
                 +
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">
-              Maximum 20 personnes par groupe
+              Maximum 30 personnes par groupe
             </p>
           </div>
 
@@ -206,7 +234,7 @@ const ReservationForm = () => {
           <Button 
             type="submit" 
             className="w-full" 
-            disabled={isLoading || !isAuthenticated}
+            disabled={isLoading}
           >
             {isLoading ? "Réservation en cours..." : "Confirmer la réservation"}
           </Button>
